@@ -7,10 +7,10 @@ End-users of this product will be embedding an image into their pages to track v
 # from root folder
 docker-compose up --build -d
 ```
-`<img src="https://localhos:18080/track" alt="SuperTracker Pixel" />`
+- Track system will generate a transparent pixel gif on https://localhost:18080/track
 
+- `<img src="https://localhos:18080/track" alt="SuperTracker Pixel" />`
 
-- Track system that genereates the pixel gif will be running on https://localhost:18080/track
 - you can access the logs on `./tmp/visits.logs`
 
 <br/><br/>

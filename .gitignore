@@ -396,3 +396,6 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+/rabbitmq_data
+/tmp
+/track_system_rabbitmq_data

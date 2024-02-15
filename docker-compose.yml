@@ -1,0 +1,55 @@
+version: '3.7'
+
+services:
+  rabbitmq:
+    image: rabbitmq:3.8-management 
+    restart: always
+    ports:
+      - "5672:5672" 
+      - "15672:15672" # Management UI port
+    volumes:
+      - ./track_system_rabbitmq_data:/var/lib/rabbitmq # Persist data
+      - ./enable_plugins:/etc/rabbitmq/enable_plugins # Mount enable_plugins file
+    environment:
+      RABBITMQ_ERLANG_COOKIE: "secret_cookie" # Change this to your preferred value
+    networks:
+      - track_system_network
+
+  track-system:
+    restart: always
+    build:
+      dockerfile: TrackSystem/Dockerfile
+      context: ./
+    image: track-system/publisher
+    container_name: track-system-publisher
+    ports:
+      - 18080:8080
+      - 18081:8081
+    networks:
+      - track_system_network
+    depends_on:
+      - rabbitmq
+ 
+  track-system-consummer:
+    restart: always
+    build:
+      dockerfile: TrackSystem.Consumer/Dockerfile
+      context: ./
+    image: track-system/consummer
+    container_name: track-system-consummer
+    ports:
+      - 1080:80
+      - 1443:443
+    volumes:
+      - ./tmp:/tmp # Persist data
+    networks:
+      - track_system_network
+    depends_on:
+      - rabbitmq
+
+volumes:
+  track_system_rabbitmq_data:
+  tmp:
+
+networks:
+  track_system_network:
